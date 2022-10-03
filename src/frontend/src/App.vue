@@ -6,22 +6,19 @@
 				<router-link to="/">home</router-link>
 				<router-link to="/lernen">lernen</router-link>
 			</nav>
-    <UpdateImages/>
 		</header>
 
-	<main>
-		<router-view> <Home /> </router-view>
-	</main>
+		<main>
+			<router-view />
+		</main>
 
 		<footer>footer</footer>
+	</div>
 </template>
 
 <script>
-import UpdateImages from "@/components/UpdateImages";
-
 export default {
 	name: 'App',
-	components: {UpdateImages},
 };
 </script>
 
@@ -30,8 +27,17 @@ export default {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	text-align: center;
 	color: #2c3e50;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	min-height: 100vh;
+	padding: 0 5px;
+}
+
+* {
+	padding: 0;
+	margin: 0;
 }
 
 header {
@@ -46,12 +52,11 @@ nav > a {
 
 main {
 	flex: auto;
+	margin: 5px 0;
 }
 
-#root {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: column;
-	min-height: 100vh;
+footer {
+	text-align: center;
+	margin: 2px 0;
 }
 </style>
