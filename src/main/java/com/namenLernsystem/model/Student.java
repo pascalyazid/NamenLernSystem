@@ -17,7 +17,9 @@ public class Student {
     private String lastName;
     private String className;
     private String path;
+    private String note;
 
+    //Constructor
     public Student(String firstName, String lastName, String className, String path) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -63,5 +65,13 @@ public class Student {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

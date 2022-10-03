@@ -6,11 +6,9 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.QueryParam;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -44,7 +42,8 @@ public class StudentController {
     public @ResponseBody byte[] loadImageFile(@QueryParam("id") String id) throws IOException {
         List<Student> students = DataHandler.readJSON();
         if (students.stream().anyMatch(student -> student.getId().equals(id))) {
-            Student student = students.stream().filter(student1 -> student1.getId().equals(id)).findFirst().orElseThrow(() -> new FileNotFoundException(id));
+            Student student = students.stream().filter(student1 -> student1.getId().equals(id))
+                    .findFirst().orElseThrow(() -> new FileNotFoundException(id));
             //String path = Config.getProperty("images") + "/" + student.getPath();
             System.out.println(student.getPath());
             InputStream fis = new FileInputStream(student.getPath());
@@ -54,6 +53,22 @@ public class StudentController {
         }
     }
 
+    @PostMapping(value = "/updateNote")
+    public @ResponseBody ResponseEntity<String> updateNote(
+            @FormParam("id") String id,
+            @FormParam("note") String note
+    ) throws IOException {
+        List<Student> students = DataHandler.readJSON();
+        if (students.stream().anyMatch(student -> student.getId().equals(id))) {
+            Student student = students.stream().filter(student1 -> student1.getId().equals(id))
+                    .findFirst().orElseThrow(() -> new FileNotFoundException(id));
+            student.setNote(note);
+            DataHandler.writeJSON(students);
+            return new ResponseEntity<String>("Note updated", HttpStatus.OK);
+        }   else {
+            return new ResponseEntity<String>("Student not found", HttpStatus.NOT_FOUND);
+        }
+    }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
