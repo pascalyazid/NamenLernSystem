@@ -6,7 +6,7 @@
 	</header>
 
 	<main>
-		<router-view> <Home /> </router-view>
+		<router-view> <Home /> <UpdateImages/> </router-view>
 	</main>
 
 	<footer>footer</footer>
@@ -14,10 +14,11 @@
 
 <script>
 import Home from './components/Home.vue';
+import UpdateImages from "@/components/UpdateImages";
 
 export default {
 	name: 'App',
-	components: { Home },
+	components: {UpdateImages, Home },
 };
 </script>
 
