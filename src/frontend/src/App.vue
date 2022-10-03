@@ -5,7 +5,9 @@
 			<nav>
 				<router-link to="/">home</router-link>
 				<router-link to="/lernen">lernen</router-link>
+        <UpdateImages/>
 			</nav>
+
 		</header>
 
 		<main>
@@ -13,12 +15,13 @@
 		</main>
 
 		<footer>footer</footer>
-	</div>
 </template>
 
 <script>
+import UpdateImages from "@/components/UpdateImages";
 export default {
 	name: 'App',
+  components: {UpdateImages},
 };
 </script>
 

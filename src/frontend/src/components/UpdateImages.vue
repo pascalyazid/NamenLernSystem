@@ -1,7 +1,6 @@
 <template>
   <main>
-    <p>Bilder hochladen/aktualisieren</p>
-    <button v-on:click="update">Aktualisieren</button>
+    <button v-on:click="update">Bilder updaten</button>
   </main>
 </template>
 
