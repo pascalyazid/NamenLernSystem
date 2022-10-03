@@ -56,5 +56,6 @@ main {
 
 footer {
 	text-align: center;
+	margin: 2px 0;
 }
 </style>
