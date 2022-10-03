@@ -28,6 +28,18 @@ public class StudentController {
         return DataHandler.readJSON();
     }
 
+    @RequestMapping(value = "/readFiles", method = RequestMethod.GET)
+    @ResponseBody
+    ResponseEntity<String> readFiles() throws IOException {
+        try {
+            DataHandler.writeJSON(DataHandler.readFiles());
+            return new ResponseEntity<String>("Wrote all Students to JSON-File", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("Couldn't read Students", HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
     @RequestMapping(value = "/load", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] loadImageFile(@QueryParam("id") String id) throws IOException {
         List<Student> students = DataHandler.readJSON();
