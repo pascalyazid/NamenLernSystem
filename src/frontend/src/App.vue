@@ -6,6 +6,7 @@
 				<router-link to="/">home</router-link>
 				<router-link to="/lernen">lernen</router-link>
 			</nav>
+    <UpdateImages/>
 		</header>
 
 	<main>
@@ -13,15 +14,14 @@
 	</main>
 
 		<footer>footer</footer>
-	</div>
 </template>
 
 <script>
-import Home from './components/Home.vue';
+import UpdateImages from "@/components/UpdateImages";
 
 export default {
 	name: 'App',
-	components: { Home },
+	components: {UpdateImages},
 };
 </script>
 
@@ -45,7 +45,7 @@ nav > a {
 }
 
 main {
-	flex-grow: auto;
+	flex: auto;
 }
 
 #root {

@@ -13,7 +13,7 @@ export default {
 
   methods: {
     update() {
-      axios.get('/images/readFiles')
+      axios.get('/students/readFiles')
           .then((response) => {
             console.log(response)
           })
