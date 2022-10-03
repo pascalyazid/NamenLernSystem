@@ -1,7 +1,13 @@
 <template>
-	<header>header</header>
+	<header>
+		<h1>NamenLernSystem</h1>
 
-	<main><router-view></router-view></main>
+		<nav>rou</nav>
+	</header>
+
+	<main>
+		<router-view></router-view>
+	</main>
 
 	<footer>footer</footer>
 </template>
