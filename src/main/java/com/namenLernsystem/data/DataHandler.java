@@ -21,7 +21,7 @@ public class DataHandler {
             Type listType = new TypeToken<List<Student>>() {
             }.getType();
 
-            InputStream fis = new FileInputStream(Config.getProperty("imageJSON"));
+            InputStream fis = new FileInputStream(Config.getProperty("studentJSON"));
             InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
             Reader reader = new BufferedReader(isr);
 
