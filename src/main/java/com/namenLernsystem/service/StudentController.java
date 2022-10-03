@@ -73,7 +73,6 @@ public class StudentController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     List<Student> testCreate() throws IOException {
-        //DataHandler.createStudentTest();
         return DataHandler.readJSON();
     }
 }
