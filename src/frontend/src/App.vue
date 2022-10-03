@@ -1,14 +1,23 @@
 <template>
-	<header>header</header>
+	<header>
+		<h1>NamenLernSystem</h1>
 
-	<main><router-view></router-view></main>
+		<nav>‹router-link :to="{ name: 'home' }"›‹/router-link›</nav>
+	</header>
+
+	<main>
+		<router-view> <Home /> </router-view>
+	</main>
 
 	<footer>footer</footer>
 </template>
 
 <script>
+import Home from './components/Home.vue';
+
 export default {
 	name: 'App',
+	components: { Home },
 };
 </script>
 
