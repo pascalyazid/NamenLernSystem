@@ -1,5 +1,6 @@
 package com.namenLernsystem;
 
+import com.namenLernsystem.data.DataHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
