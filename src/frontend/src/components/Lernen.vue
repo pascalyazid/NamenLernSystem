@@ -1,9 +1,9 @@
 <template>
-	<p>home</p>
+	<p>lernen</p>
 </template>
 
 <script>
 export default {
-	name: 'GabrielHome',
+	name: 'GabrielLernen',
 };
 </script>
