@@ -1,28 +1,25 @@
 <template>
-	<header>
-		<h1>NamenLernSystem</h1>
+	<div id="root">
+		<header>
+			<h1>NamenLernSystem</h1>
 
-		<nav>
-			<router-link :to="{ name: 'GabrielHome' }">home</router-link>
-			<router-link :to="{ name: 'GabrielLernen' }">lernen</router-link>
-		</nav>
-	</header>
+			<nav>
+				<router-link to="/">home</router-link>
+				<router-link to="/lernen">lernen</router-link>
+			</nav>
+		</header>
 
-	<main>
-		<router-view> <Home /> </router-view>
-		<router-view> <Lernen /> </router-view>
-	</main>
+		<main>
+			<router-view />
+		</main>
 
-	<footer>footer</footer>
+		<footer>footer</footer>
+	</div>
 </template>
 
 <script>
-import Home from './components/Home.vue';
-import Lernen from './components/Lernen.vue';
-
 export default {
 	name: 'App',
-	components: { Home, Lernen },
 };
 </script>
 
@@ -32,5 +29,26 @@ export default {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+nav > a {
+	margin-right: 5px;
+}
+
+main {
+	flex-grow: auto;
+}
+
+#root {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	min-height: 100vh;
 }
 </style>
