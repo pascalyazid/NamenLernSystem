@@ -2,23 +2,26 @@
 	<header>
 		<h1>NamenLernSystem</h1>
 
-		<nav>‹router-link :to="{ name: 'home' }"›‹/router-link›</nav>
-	</header>
+			<nav>
+				<router-link to="/">home</router-link>
+				<router-link to="/lernen">lernen</router-link>
+			</nav>
+		</header>
 
 	<main>
-		<router-view> <Home /> <UpdateImages/> </router-view>
+		<router-view> <Home /> </router-view>
 	</main>
 
-	<footer>footer</footer>
+		<footer>footer</footer>
+	</div>
 </template>
 
 <script>
 import Home from './components/Home.vue';
-import UpdateImages from "@/components/UpdateImages";
 
 export default {
 	name: 'App',
-	components: {UpdateImages, Home },
+	components: { Home },
 };
 </script>
 
@@ -29,6 +32,26 @@ export default {
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
 	color: #2c3e50;
-	margin-top: 60px;
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+nav > a {
+	margin-right: 5px;
+}
+
+main {
+	flex-grow: auto;
+}
+
+#root {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	min-height: 100vh;
 }
 </style>
