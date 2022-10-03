@@ -1,20 +1,18 @@
 <template>
-	<div id="root">
-		<header>
-			<h1>NamenLernSystem</h1>
+	<header>
+		<h1>NamenLernSystem</h1>
 
-			<nav>
-				<router-link to="/">home</router-link>
-				<router-link to="/lernen">lernen</router-link>
-			</nav>
-		</header>
+		<nav>
+			<router-link to="/">home</router-link>
+			<router-link to="/lernen">lernen</router-link>
+		</nav>
+	</header>
 
-		<main>
-			<router-view />
-		</main>
+	<main>
+		<router-view />
+	</main>
 
-		<footer>footer</footer>
-	</div>
+	<footer>@copyright</footer>
 </template>
 
 <script>
@@ -29,6 +27,16 @@ export default {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	min-height: 100vh;
+	padding: 0 5px;
+}
+
+* {
+	padding: 0;
+	margin: 0;
 }
 
 header {
@@ -42,13 +50,11 @@ nav > a {
 }
 
 main {
-	flex-grow: auto;
+	flex: auto;
+	margin: 5px 0;
 }
 
-#root {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: column;
-	min-height: 100vh;
+footer {
+	text-align: center;
 }
 </style>
