@@ -1,20 +1,10 @@
 <template>
-	<header>
-		<h1>NamenLernSystem</h1>
-
-		<nav>rou</nav>
-	</header>
-
-	<main>
-		<router-view></router-view>
-	</main>
-
-	<footer>footer</footer>
+	<p>home</p>
 </template>
 
 <script>
 export default {
-	name: 'App',
+	name: 'home',
 };
 </script>
 
