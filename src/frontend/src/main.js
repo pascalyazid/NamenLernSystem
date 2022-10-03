@@ -1,4 +1,7 @@
-import App from './App.vue';
 import { createApp } from 'vue';
-
-createApp(App).mount('#app');
+import VueAxios from 'vue-axios';
+import App from '@/App';
+import axios from 'axios';
+const app = createApp(App);
+app.use(VueAxios, axios);
+app.mount('#app');
