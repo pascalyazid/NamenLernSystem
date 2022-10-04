@@ -73,7 +73,6 @@ export default {
     wrongU() {
       if (this.index != this.size) {
         this.wrong++;
-        this.index++;
         this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
         if(this.wrong1){
           this.wrongs2.push(this.students[this.index])
@@ -82,7 +81,8 @@ export default {
           this.wrongs1.push(this.students[this.index])
         }
         console.log("index:" + this.index)
-        console.log("size:" + this.size)
+
+        this.index++;
       }
 
     },
