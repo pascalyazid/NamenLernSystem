@@ -3,6 +3,7 @@ import Resultat from '../views/Resultat.vue';
 import Lernen from '../views/Lernen.vue';
 import Test from '@/views/Test';
 import Download from '../views/Download.vue';
+import Home from '../views/Home.vue'
 
 const routes = [
 	{
@@ -10,8 +11,6 @@ const routes = [
 		name: 'GabrielResultat',
 		component: Resultat,
 	},
-
-	{ redirect: '/lernen', path: '/' },
 	{
 		path: '/lernen',
 		name: 'GabrielLernen',
@@ -26,6 +25,11 @@ const routes = [
 		path: '/download',
 		name: 'DownloadView',
 		component: Download,
+	},
+	{
+		path: '/',
+		name: 'HomeView',
+		component: Home,
 	},
 ];
 
