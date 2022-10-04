@@ -1,7 +1,7 @@
 <template>
 <p>HTML-Page downloaden:</p>
   <button @click="download">
-    check
+    Download
   </button>
 </template>
 
@@ -19,8 +19,8 @@ export default {
         const data = await res.data;
         var htmlData = "<div style='display: flex; flex-wrap: wrap; justify-content: space-between;'>";
         for (let i = 0; i < data.length; i++) {
-          htmlData += "<div><img src='" + data[i].path + "' style='width: 150px'/> <p>" + data[i].firstName + " "
-              + data[i].lastName + "</div></p><br/>";
+          htmlData += "<div><img src='" + data[i].path + "' style='width: 150px; height: 150px; object-fit: cover'/> " +
+              "<p style='width: min-content'>" + data[i].firstName + " " + data[i].lastName + "</div></p><br/>";
         }
         htmlData += "</div>"
         const file = new File([htmlData], 'data.html', {

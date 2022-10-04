@@ -64,7 +64,10 @@ public class DataHandler {
                         fileName = fileName.substring(0, fileName.lastIndexOf("."));
                     }
                     String[] names = fileName.split("_");
-                    students.add(new Student(names[0], names[1], directories[i].getName(), images[j].getPath()));
+
+                    students.add(new Student(names[0].substring(0,1).toUpperCase() +
+                            names[0].substring(1), names[1].substring(0,1).toUpperCase() +
+                            names[1].substring(1), directories[i].getName(), images[j].getPath()));
                 }
             }
 
