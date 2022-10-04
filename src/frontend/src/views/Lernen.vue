@@ -1,10 +1,6 @@
 <template>
 	<div class="container">
-		<div
-			class="cardContainer"
-			v-for="(student, index) in visibleStudents"
-			v-bind:key="student.id"
-		>
+		<div class="cardContainer" v-for="student in visibleStudents" v-bind:key="student.id">
 			<div>
 				<img :src="student.img" alt="alt" />
 			</div>
@@ -14,7 +10,7 @@
 					<p
 						@click="setSelectedIndex(stu.index)"
 						v-for="stu in activeNames"
-						v-bind:key="stu.index + index"
+						v-bind:key="stu.id"
 						:class="optionStyle(stu.index)"
 					>
 						{{ stu.name }}
@@ -44,6 +40,7 @@ export default {
 			activeNames: [],
 			selectedIndex: -1,
 			answer: null,
+			newStudent: true,
 		};
 	},
 
@@ -75,12 +72,13 @@ export default {
 					' ' +
 					firstToUpper(this.data[this.activeIndex].lastName),
 				index: this.activeIndex,
+				id: this.data[this.activeIndex].id,
 			});
 
 			const addedIndices = [];
 
 			for (let i = 0; i < 4; i++) {
-				const index = rng(0, this.data.length);
+				const index = rng(0, this.visibleStudents.length);
 
 				if (index == this.activeIndex || addedIndices.includes(index)) {
 					i -= 1;
@@ -95,6 +93,7 @@ export default {
 						' ' +
 						firstToUpper(this.data[index].lastName),
 					index,
+					id: this.data[index].id,
 				});
 			}
 
@@ -114,6 +113,8 @@ export default {
 				alert('bitte ein Namen auswählen und checken!!!');
 				return;
 			}
+
+			this.newStudent = true;
 			const ctnr = document.querySelector('.container');
 
 			ctnr.classList.remove('animation');
@@ -155,7 +156,7 @@ export default {
 };
 
 function rng(min, max) {
-	return Math.round(Math.random() * (max - min) + min);
+	return Math.ceil(Math.random() * (max - min) + min) - 1;
 }
 
 function firstToUpper(str) {
