@@ -1,8 +1,10 @@
 <template>
-<p>HTML-Page downloaden:</p>
+  <div style="top: 10%; position: absolute;">
+  <p>HTML-Page downloaden:</p>
   <button @click="download">
     Download
   </button>
+  </div>
 </template>
 
 
