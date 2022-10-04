@@ -1,13 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home.vue';
+import Resultat from '../views/Resultat.vue';
 import Lernen from '../views/Lernen.vue';
-import Test from "@/views/Test";
+import Test from '@/views/Test';
 const routes = [
 	{
-		path: '/',
-		name: 'GabrielHome',
-		component: Home,
+		path: '/resultat',
+		name: 'GabrielResultat',
+		component: Resultat,
 	},
+
+	{ redirect: '/lernen', path: '/' },
 	{
 		path: '/lernen',
 		name: 'GabrielLernen',
@@ -19,8 +21,10 @@ const routes = [
 		component: Test,
 	},
 ];
+
 const router = createRouter({
 	history: createWebHistory(process.env.BASE_URL),
 	routes,
 });
+
 export default router;

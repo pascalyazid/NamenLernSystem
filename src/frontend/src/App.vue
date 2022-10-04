@@ -9,20 +9,18 @@
         <UpdateImages/>
 			</nav>
 
-		</header>
+	<main>
+		<router-view />
+	</main>
 
-		<main>
-			<router-view />
-		</main>
-
-		<footer>footer</footer>
+	<footer>footer</footer>
 </template>
 
 <script>
-import UpdateImages from "@/components/UpdateImages";
+import UpdateImages from '@/components/UpdateImages';
 export default {
 	name: 'App',
-  components: {UpdateImages},
+	components: { UpdateImages },
 };
 </script>
 
@@ -37,6 +35,7 @@ export default {
 	flex-direction: column;
 	min-height: 100vh;
 	padding: 0 5px;
+	overflow-x: hidden;
 }
 
 * {
@@ -57,6 +56,8 @@ nav > a {
 main {
 	flex: auto;
 	margin: 5px 0;
+	display: flex;
+	align-items: center;
 }
 
 footer {

@@ -32,6 +32,7 @@ public class StudentController {
     @ResponseBody
     ResponseEntity<String> readFiles() throws IOException {
         try {
+
             DataHandler.writeJSON(DataHandler.readFiles());
             ResponseEntity<String > response = new ResponseEntity<>("Wrote all Students to JSON-File", HttpStatus.OK);
             return response;
