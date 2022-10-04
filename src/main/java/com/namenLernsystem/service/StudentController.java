@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Encoded;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.QueryParam;
 import java.io.FileInputStream;
@@ -20,19 +21,21 @@ import java.util.List;
 @RequestMapping("/students")
 public class StudentController {
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
+    @Encoded
     @ResponseBody
-    List<Student> allStudents() throws IOException {
-        return DataHandler.readJSON();
+    ResponseEntity<List<Student>> allStudents() throws IOException {
+        return new ResponseEntity<List<Student>>(DataHandler.readJSON(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/readFiles", method = RequestMethod.GET)
     @ResponseBody
     ResponseEntity<String> readFiles() throws IOException {
         try {
-            List<Student> list = DataHandler.readFiles();
-            DataHandler.writeJSON(list);
-            return new ResponseEntity<String>("Wrote all Students to JSON-File", HttpStatus.OK);
+
+            DataHandler.writeJSON(DataHandler.readFiles());
+            ResponseEntity<String > response = new ResponseEntity<>("Wrote all Students to JSON-File", HttpStatus.OK);
+            return response;
         } catch (Exception e) {
             return new ResponseEntity<String>("Couldn't read Students", HttpStatus.BAD_REQUEST);
         }
