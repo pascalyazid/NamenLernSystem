@@ -6,6 +6,7 @@
 			<router-link to="/">home</router-link>
 			<router-link to="/lernen">lernen</router-link>
 			<router-link to="/Test">test</router-link>
+      <router-link to="/download">download</router-link>
 			<UpdateImages />
 		</nav>
 	</header>

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Resultat from '../views/Resultat.vue';
 import Lernen from '../views/Lernen.vue';
 import Test from '@/views/Test';
+import Download from '../views/Download.vue';
 
 const routes = [
 	{
@@ -20,6 +21,11 @@ const routes = [
 		path: '/test',
 		name: 'TestComponent',
 		component: Test,
+	},
+	{
+		path: '/download',
+		name: 'DownloadView',
+		component: Download,
 	},
 ];
 
