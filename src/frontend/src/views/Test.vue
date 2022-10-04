@@ -20,11 +20,11 @@
 
   <div>
     <button
-        v-if="index != size -1 "
+        v-if="index != size  "
         @click=" index == size -1 ? evaluate() : rightU()">Richtig
     </button>
     <button
-        v-if="index != size -1"
+        v-if="index != size "
         @click=" index == size -1 ? evaluate() : wrongU()">Falsch
     </button>
   </div>
