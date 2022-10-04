@@ -2,13 +2,13 @@
 	<header>
 		<h1>NamenLernSystem</h1>
 
-			<nav>
-				<router-link to="/">home</router-link>
-				<router-link to="/lernen">lernen</router-link>
-        <router-link to="/Test">test</router-link>
-        <UpdateImages/>
-			</nav>
-  </header>
+		<nav>
+			<router-link to="/">home</router-link>
+			<router-link to="/lernen">lernen</router-link>
+			<router-link to="/Test">test</router-link>
+			<UpdateImages />
+		</nav>
+	</header>
 	<main>
 		<router-view />
 	</main>
