@@ -8,7 +8,10 @@
         <div class="card__face card__face--front">
           <img :src="'/students/load?id=' + id" class="imageS">
         </div>
-        <div class="card__face card__face--back">{{ firstName + " " + lastName }}</div>
+        <div class="card__face card__face--back">
+          <p>{{ firstName }} {{ lastName }}</p>
+
+        </div>
       </div>
     </div>
   </div>
@@ -57,7 +60,7 @@ body {
   color: white;
   text-align: center;
   font-weight: bold;
-  font-size: 40px;
+  font-size: 15px;
   backface-visibility: hidden;
 }
 
