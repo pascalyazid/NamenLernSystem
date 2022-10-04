@@ -17,6 +17,7 @@
         <java.version>19</java.version>
         <node.version>v16.17.0</node.version>
         <npm.version>8.15.0</npm.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
         <dependency>
