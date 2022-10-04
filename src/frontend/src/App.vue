@@ -8,7 +8,7 @@
         <router-link to="/Test">test</router-link>
         <UpdateImages/>
 			</nav>
-
+  </header>
 	<main>
 		<router-view />
 	</main>
