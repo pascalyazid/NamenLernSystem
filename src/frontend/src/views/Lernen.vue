@@ -1,5 +1,27 @@
 <template>
+	<div id="score" v-if="amountCorrect >= 0">{{ amountCorrect }}/{{ activeIndex }}</div>
 	<div class="container">
+		<div class="auswahlContainer">
+			<h2>Klassenauswahl</h2>
+			<div class="inputContainer">
+				<div>
+					<input v-model="filter.im21a" type="checkbox" name="" id="im21a" />
+					<label for="im21a">IM21a</label>
+				</div>
+				<div>
+					<input v-model="filter.ia21a" type="checkbox" name="" id="ia21a" />
+					<label for="ia21a">IA21a</label>
+				</div>
+				<div>
+					<input v-model="filter.ia21b" type="checkbox" name="" id="ia21b" />
+					<label for="ia21b">IA21b</label>
+				</div>
+			</div>
+			<div class="buttonContainer">
+				<button @click="filterStudents">next</button>
+			</div>
+		</div>
+
 		<div class="cardContainer" v-for="student in visibleStudents" v-bind:key="student.id">
 			<div>
 				<img :src="student.img" alt="alt" />
@@ -36,11 +58,14 @@ export default {
 		return {
 			data: [],
 			visibleStudents: [],
-			activeIndex: 0,
+			activeIndex: -1,
 			activeNames: [],
 			selectedIndex: -1,
-			answer: null,
+			answer: true,
 			newStudent: true,
+			filter: { im21a: true, ia21a: true, ia21b: true },
+			amountCorrect: -1,
+			wrongStudents: [],
 		};
 	},
 
@@ -48,8 +73,6 @@ export default {
 		const res = await axios.get('/students/list');
 
 		const data = await res.data;
-
-		console.log(data);
 
 		this.data = data.map((e) => ({ ...e, img: '/students/load?id=' + e.id }));
 
@@ -59,12 +82,29 @@ export default {
 
 		document
 			.querySelector(':root')
-			.style.setProperty('--translate-value', -100 / data.length + '%');
+			.style.setProperty(
+				'--translate-value',
+				-100 / (this.visibleStudents.length + 1) + '%'
+			);
 
 		this.setNames();
 	},
 
 	methods: {
+		filterStudents() {
+			this.visibleStudents = this.visibleStudents.filter((e) =>
+				this.filter[e.className.toLowerCase()] ? e : undefined
+			);
+
+			document
+				.querySelector(':root')
+				.style.setProperty(
+					'--translate-value',
+					-100 / (this.visibleStudents.length + 1) + '%'
+				);
+			this.nextStudent();
+		},
+
 		setNames() {
 			this.activeNames.push({
 				name:
@@ -114,6 +154,12 @@ export default {
 				return;
 			}
 
+			if (this.answer) {
+				this.amountCorrect++;
+			} else {
+				this.wrongStudents.push(this.visibleStudents[this.activeIndex]);
+			}
+
 			this.newStudent = true;
 			const ctnr = document.querySelector('.container');
 
@@ -124,8 +170,9 @@ export default {
 				.querySelector(':root')
 				.style.setProperty(
 					'--current-translate-value',
-					(-100 / this.data.length) * this.activeIndex + '%'
+					(-100 / (this.visibleStudents.length + 1)) * (this.activeIndex + 1) + '%'
 				);
+
 			this.activeIndex++;
 			this.answer = null;
 			this.activeNames = [];
@@ -170,6 +217,13 @@ function firstToUpper(str) {
 	--current-translate-value: 0%;
 }
 
+#score {
+	position: fixed;
+	top: 15%;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 10;
+}
 img {
 	height: 450px;
 	border-radius: 20px;
@@ -185,7 +239,27 @@ img {
 	animation: next 0.75s ease-in-out forwards;
 }
 
-.container > div {
+.inputContainer {
+	width: max-content;
+	flex-grow: 1;
+	max-height: 50%;
+	max-width: 50%;
+}
+
+.inputContainer > div {
+	flex-grow: 1;
+	width: 100%;
+	height: fit-content;
+	display: flex;
+	justify-content: space-evenly;
+}
+
+.inputContainer > div > label {
+	margin: 10px;
+	font-size: 20px;
+}
+.container > div,
+.auswahlContainer {
 	padding: 15px;
 	width: 95vw;
 	background-color: aliceblue;
@@ -196,6 +270,11 @@ img {
 	align-items: center;
 	justify-content: space-between;
 	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.auswahlContainer {
+	display: flex;
+	flex-direction: column;
 }
 
 .optionContainer {
@@ -214,17 +293,25 @@ img {
 }
 
 .nameContainer > p {
-	padding: 20px;
+	padding: 15px 20px;
 	font-size: 22.5px;
 	cursor: pointer;
 	margin: 12.5px;
+	border-radius: 10px;
+}
+
+.nameContainer > p:hover {
+	background-color: #d0d8dd;
 }
 
 .selectedName {
 	background-color: #334155;
 	color: #fff;
-	border-radius: 20px;
 	box-sizing: border-box;
+}
+
+.selectedName:hover {
+	background-color: #334155 !important;
 }
 
 .correct {
