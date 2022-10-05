@@ -20,11 +20,11 @@
 			</div>
 
 			<div class="optionContainer">
-				<div class="nameContainer">
+				<div v-if="!newStudent" class="nameContainer">
 					<p
 						@click="setSelectedIndex(stu.index)"
 						v-for="stu in activeNames"
-						v-bind:key="stu.uuid"
+						v-bind:key="stu.uuid + Date.now()"
 						:class="optionStyle(stu.index)"
 					>
 						{{ stu.name }}
@@ -50,7 +50,7 @@ export default {
 			selectedIndex: -1,
 			answer: true,
 			newStudent: true,
-			filter: { im21a: true, ia21a: true, ia21b: true },
+			filter: {},
 			amountCorrect: -1,
 			wrongStudents: [],
 			classes: new Set(),
@@ -170,6 +170,9 @@ export default {
 
 			ctnr.classList.remove('animation');
 			ctnr.offsetWidth;
+			setTimeout(() => {
+				this.newStudent = false;
+			}, 500);
 
 			document
 				.querySelector(':root')
@@ -268,8 +271,8 @@ img {
 .container > div,
 .auswahlContainer {
 	padding: 15px;
-	margin: 10px;
-	width: calc(100vw - 50px);
+	margin: 20px;
+	width: calc(100vw - 70px);
 	height: 80vh;
 	display: flex;
 	align-items: center;
