@@ -32,7 +32,7 @@
 					<p
 						@click="setSelectedIndex(stu.index)"
 						v-for="stu in activeNames"
-						v-bind:key="stu.id"
+						v-bind:key="stu.uuid"
 						:class="optionStyle(stu.index)"
 					>
 						{{ stu.name }}
@@ -51,6 +51,7 @@
 
 <script>
 import axios from 'axios';
+import { v4 } from 'uuid';
 
 export default {
 	name: 'GabrielLernen',
@@ -102,30 +103,37 @@ export default {
 					'--translate-value',
 					-100 / (this.visibleStudents.length + 1) + '%'
 				);
+
+			this.visibleStudents.sort(() => Math.random() - Math.random());
+
 			this.nextStudent();
 		},
 
 		setNames() {
 			this.activeNames.push({
 				name:
-					firstToUpper(this.data[this.activeIndex].firstName) +
+					firstToUpper(this.visibleStudents[this.activeIndex].firstName) +
 					' ' +
-					firstToUpper(this.data[this.activeIndex].lastName),
+					firstToUpper(this.visibleStudents[this.activeIndex].lastName),
 				index: this.activeIndex,
-				id: this.data[this.activeIndex].id,
+				id: this.visibleStudents[this.activeIndex].id,
+				uuid: v4(),
 			});
 
-			const addedIndices = [];
+			const addedIds = [];
 
 			for (let i = 0; i < 4; i++) {
 				const index = rng(0, this.visibleStudents.length);
 
-				if (index == this.activeIndex || addedIndices.includes(index)) {
+				if (
+					this.visibleStudents[index].id == this.visibleStudents[this.activeIndex].id ||
+					addedIds.includes(this.visibleStudents[index].id)
+				) {
 					i -= 1;
 					continue;
 				}
 
-				addedIndices.push(index);
+				addedIds.push(this.visibleStudents[index].id);
 
 				this.activeNames.push({
 					name:
@@ -134,6 +142,7 @@ export default {
 						firstToUpper(this.data[index].lastName),
 					index,
 					id: this.data[index].id,
+					uuid: v4(),
 				});
 			}
 
@@ -141,7 +150,10 @@ export default {
 		},
 
 		setSelectedIndex(index) {
-			if (this.answer == null) this.selectedIndex = index;
+			if (this.answer == null) {
+				this.selectedIndex = index;
+				this.newStudent = false;
+			}
 		},
 
 		checkAnswer() {
@@ -182,6 +194,8 @@ export default {
 
 		optionStyle(index) {
 			let css = '';
+
+			if (this.newStudent) return;
 
 			if (index == this.selectedIndex) {
 				css += 'selectedName ';
