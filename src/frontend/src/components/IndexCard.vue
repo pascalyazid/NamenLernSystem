@@ -65,7 +65,7 @@ body {
 }
 
 .card__face--front {
-  background: black;
+  background: none;
 }
 
 .card__face--back {
