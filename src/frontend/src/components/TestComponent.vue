@@ -1,48 +1,51 @@
 <template>
-
-  <select name="class" id="classNames"
-          @change="updateClass($event)"
-  >
-    <option value="all">
-      Alle
-    </option>
-    <option
-        v-for="(className, i) in this.classes" :key="i"
-        :value="className"
+  <div id="karteiKarten">
+    <select name="class" id="classNames"
+            @change="updateClass($event)"
     >
-      {{ className }}
-    </option>
+      <option value="all">
+        Alle
+      </option>
+      <option
+          v-for="(className, i) in this.classes" :key="i"
+          :value="className"
+      >
+        {{ className }}
+      </option>
 
-  </select>
-  <button class="btn_1"
-      v-if="index != size  "
-      @click=" index == size -1 ? evaluate() : rightU()">
-    <img src="@/assets/green.png" class="button_1">
-  </button>
-  <IndexCard :firstName="students[index].firstName" :lastName="students[index].lastName" :id="students[index].id"
-             v-if="students != null && !finish"
-  />
-  <button class="btn_1"
-      v-if="index != size "
-      @click=" index == size -1 ? evaluate() : wrongU()">
-    <img src="@/assets/red.jpg" class="button_2">
-  </button>
-  <button v-if="finish"
-          @click="reloadP"
-  >
-    Neustart
-  </button>
-
-  <div>
-
-
-  </div>
-  <div class="result-item">
-    {{ result }}
-    <button
-        v-if="index == size -1 "
-        @click="loadWrong()">Falsche lernen
+    </select>
+    <IndexCard :firstName="students[index].firstName" :lastName="students[index].lastName" :id="students[index].id"
+               v-if="students != null && !finish"
+    />
+    <div>
+      <button id="btn_1"
+              v-if="index != size  "
+              @click=" index == size -1 ? evaluate() : rightU()">
+        <img src="@/assets/green.jpg" id="button_1">
+      </button>
+      <button id="btn_1"
+              v-if="index != size "
+              @click=" index == size -1 ? evaluate() : wrongU()">
+        <img src="@/assets/red.jpg" id="button_2">
+      </button>
+    </div>
+    <button v-if="finish"
+            @click="reloadP"
+    >
+      Neustart
     </button>
+
+    <div>
+
+
+    </div>
+    <div class="result-item">
+      {{ result }}
+      <button
+          v-if="index == size -1 "
+          @click="loadWrong()">Falsche lernen
+      </button>
+    </div>
   </div>
 </template>
 
@@ -144,18 +147,43 @@ export default {
 </script>
 
 <style scoped>
-.btn_1 {
+#btn_1 {
   background-color: white;
   border: none;
 }
-.button_1 {
+#button_1 {
   width: 50px;
   height: 50px;
   border: none;
 }
-.button_2 {
-  width: 70px;
-  height: 70px;
+#button_2 {
+  width: 50px;
+  height: 50px;
+  resize: 1.5;
   border: none;
+}
+
+#btn_1 img {
+  border-radius: 0;
+  padding-inline: 10px;
+}
+
+select {
+  margin-bottom: 1em;
+  padding: .25em;
+  border: 0;
+  border-bottom: 2px solid currentcolor;
+  font-weight: normal;
+  letter-spacing: .15em;
+  border-radius: 0;
+}
+
+#karteiKarten {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 </style>
