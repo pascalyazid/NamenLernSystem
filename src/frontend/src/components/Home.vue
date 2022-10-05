@@ -1,29 +1,29 @@
 <template>
   <div class="home">
-    <div class="homecard">
-        <a href="/lernen">
+    <div class="homecard" @click="toggle(4)">
           <img src="/lernen.png" />
-          <p>Lernen</p>
-        </a>
+          <p>Multiple-Choise</p>
     </div>
-    <div class="homecard">
-      <a href="/test">
+    <div class="homecard" @click="toggle(2)">
+
         <img src="/testen.png" />
-        <p>Testen</p>
-      </a>
+        <p>Karteikarten</p>
     </div>
-    <div class="homecard">
-      <a href="/download">
+    <div class="homecard" @click="toggle(3)">
         <img src="/download.png" />
         <p>Download</p>
-      </a>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HomeView'
+  name: 'HomeView',
+  methods: {
+    toggle(num) {
+      this.emitter.emit("toggle", num);
+    }
+  }
 };
 </script>
 

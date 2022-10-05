@@ -2,9 +2,9 @@ import { createApp } from 'vue';
 import VueAxios from 'vue-axios';
 import App from '@/App';
 import axios from 'axios';
-import Router from './router/index';
-
+import mitt from 'mitt';
+const emitter = mitt();
 const app = createApp(App);
+app.config.globalProperties.emitter = emitter;
 app.use(VueAxios, axios);
-app.use(Router);
 app.mount('#app');
