@@ -85,7 +85,6 @@ export default {
 	justify-content: space-between;
 	flex-direction: column;
 	min-height: 100vh;
-	margin: 0 5px;
 	overflow-x: hidden;
 }
 
