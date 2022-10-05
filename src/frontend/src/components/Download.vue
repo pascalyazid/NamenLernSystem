@@ -1,5 +1,5 @@
 <template>
-  <div style="top: 10%; position: absolute;">
+  <div id="download" style="top: 10%; position: absolute;">
   <p>HTML-Page downloaden:</p>
     <div v-for="(className,i) in this.classes" :key="i">
       <input type="checkbox"  :id="className" checked="true" />
@@ -79,3 +79,13 @@ export default {
   }
 };
 </script>
+<style>
+#download {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+</style>
