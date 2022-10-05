@@ -2,7 +2,7 @@
   <div style="top: 10%; position: absolute;">
   <p>HTML-Page downloaden:</p>
     <div v-for="(className,i) in this.classes" :key="i">
-      <input type="checkbox"  :id="className" checked="true" />
+      <input type="checkbox"  :id="className" />
       <label :for="className">{{ className }}</label>
     </div>
   <button @click="download">
