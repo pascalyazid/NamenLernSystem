@@ -1,11 +1,11 @@
 <template>
   <div id="download" style="top: 10%; position: absolute;">
-  <p>HTML-Page downloaden:</p>
+  <h2>HTML-Page downloaden:</h2>
     <div v-for="(className,i) in this.classes" :key="i">
       <input type="checkbox"  :id="className" />
-      <label :for="className">{{ className }}</label>
+      <label :for="className">&nbsp;{{ className }}</label>
     </div>
-  <button @click="download">
+  <button class="button" @click="download">
     Download
   </button>
   </div>
@@ -87,5 +87,33 @@ export default {
   align-items: center;
   width: 100%;
   cursor: auto;
+}
+
+.button {
+  backface-visibility: hidden;
+  background-color: #6277f1;
+  border-radius: 6px;
+  border-width: 0;
+  box-shadow: rgba(50, 50, 93, .1) 0 0 0 1px inset,rgba(50, 50, 93, .1) 0 2px 5px 0,rgba(0, 0, 0, .07) 0 1px 1px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif;
+  font-size: 100%;
+  height: 44px;
+  line-height: 1.15;
+  margin: 12px 0 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0 25px;
+  position: relative;
+  text-align: center;
+  text-transform: none;
+  transform: translateZ(0);
+  transition: all .2s,box-shadow .08s ease-in;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: max-content;
 }
 </style>
