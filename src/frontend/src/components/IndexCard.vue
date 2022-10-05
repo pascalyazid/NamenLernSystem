@@ -78,6 +78,7 @@ body {
 .card__face--back {
   background: darkslategrey;
   transform: rotateY(-180deg);
+  border-radius: 20px;
 }
 
 .flipme {
