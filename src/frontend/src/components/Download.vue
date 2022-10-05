@@ -86,5 +86,6 @@ export default {
   justify-content: center;
   align-items: center;
   width: 100%;
+  cursor: auto;
 }
 </style>
