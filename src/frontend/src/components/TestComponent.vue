@@ -72,7 +72,7 @@ export default {
     wrong1: true,
     wrong2: false,
     finish: false,
-    result: '',
+    result: 'Resultat:',
     size: 0,
     testStudent: {}
   }),

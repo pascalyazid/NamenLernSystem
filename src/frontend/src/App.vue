@@ -16,7 +16,7 @@
 		<Lernen v-if="showLernen" />
 	</main>
 
-	<footer>@Copyrights Quick-IT AG</footer>
+	<footer>© Quick-IT AG</footer>
 </template>
 
 <script>

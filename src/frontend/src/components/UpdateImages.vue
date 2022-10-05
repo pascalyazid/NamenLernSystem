@@ -1,6 +1,7 @@
 <template>
   <main>
-    <button v-on:click="update">Bilder updaten</button>
+
+    <p v-on:click="update" id="download">Bilder updaten</p>
   </main>
 </template>
 
@@ -14,13 +15,23 @@ export default {
     update() {
       axios.get('/students/readFiles')
           .then((response) => {
-            console.log(response)
+            if(response.status == 200){
+              alert("Bilder aktualisiert")
+            }
           })
+          .catch((error) => {
+        if(error.response.status == 400) {
+          alert("Fehler beim aktualisieren")
+        }
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-
+#download {
+  padding-top: 3px;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+}
 </style>
