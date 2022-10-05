@@ -159,7 +159,6 @@ export default {
 #button_2 {
   width: 50px;
   height: 50px;
-  resize: 1.5;
   border: none;
 }
 
