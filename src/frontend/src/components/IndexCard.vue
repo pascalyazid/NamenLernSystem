@@ -72,12 +72,13 @@ body {
 }
 
 .card__face--front {
-  background: black;
+  background: none;
 }
 
 .card__face--back {
   background: darkslategrey;
   transform: rotateY(-180deg);
+  border-radius: 20px;
 }
 
 .flipme {

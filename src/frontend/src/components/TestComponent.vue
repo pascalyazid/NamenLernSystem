@@ -1,4 +1,5 @@
 <template>
+
   <select name="class" id="classNames"
           @change="updateClass($event)"
   >
@@ -9,9 +10,19 @@
       {{ className }}
     </option>
   </select>
+  <button class="btn_1"
+      v-if="index != size  "
+      @click=" index == size -1 ? evaluate() : rightU()">
+    <img src="@/assets/green.png" class="button_1">
+  </button>
   <IndexCard :firstName="students[index].firstName" :lastName="students[index].lastName" :id="students[index].id"
              v-if="students != null && !finish"
   />
+  <button class="btn_1"
+      v-if="index != size "
+      @click=" index == size -1 ? evaluate() : wrongU()">
+    <img src="@/assets/red.jpg" class="button_2">
+  </button>
   <button v-if="finish"
           @click="reloadP"
   >
@@ -19,14 +30,8 @@
   </button>
 
   <div>
-    <button
-        v-if="index != size  "
-        @click=" index == size -1 ? evaluate() : rightU()">Richtig
-    </button>
-    <button
-        v-if="index != size "
-        @click=" index == size -1 ? evaluate() : wrongU()">Falsch
-    </button>
+
+
   </div>
   <div class="result-item">
     {{ result }}
@@ -138,5 +143,18 @@ export default {
 </script>
 
 <style scoped>
-
+.btn_1 {
+  background-color: white;
+  border: none;
+}
+.button_1 {
+  width: 50px;
+  height: 50px;
+  border: none;
+}
+.button_2 {
+  width: 70px;
+  height: 70px;
+  border: none;
+}
 </style>
