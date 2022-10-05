@@ -32,7 +32,7 @@
 					<p
 						@click="setSelectedIndex(stu.index)"
 						v-for="stu in activeNames"
-						v-bind:key="stu.id"
+						v-bind:key="stu.id + v4()"
 						:class="optionStyle(stu.index)"
 					>
 						{{ stu.name }}
@@ -51,6 +51,7 @@
 
 <script>
 import axios from 'axios';
+import { v4 } from 'uuid';
 
 export default {
 	name: 'GabrielLernen',
@@ -105,14 +106,18 @@ export default {
 			this.nextStudent();
 		},
 
+		v4() {
+			return v4();
+		},
+
 		setNames() {
 			this.activeNames.push({
 				name:
-					firstToUpper(this.data[this.activeIndex].firstName) +
+					firstToUpper(this.visibleStudents[this.activeIndex].firstName) +
 					' ' +
-					firstToUpper(this.data[this.activeIndex].lastName),
+					firstToUpper(this.visibleStudents[this.activeIndex].lastName),
 				index: this.activeIndex,
-				id: this.data[this.activeIndex].id,
+				id: this.visibleStudents[this.activeIndex].id,
 			});
 
 			const addedIndices = [];
