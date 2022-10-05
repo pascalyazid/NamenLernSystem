@@ -4,21 +4,13 @@
 		<div class="auswahlContainer">
 			<h2>Klassenauswahl</h2>
 			<div class="inputContainer">
-				<div>
-					<input v-model="filter.im21a" type="checkbox" name="" id="im21a" />
-					<label for="im21a">IM21a</label>
-				</div>
-				<div>
-					<input v-model="filter.ia21a" type="checkbox" name="" id="ia21a" />
-					<label for="ia21a">IA21a</label>
-				</div>
-				<div>
-					<input v-model="filter.ia21b" type="checkbox" name="" id="ia21b" />
-					<label for="ia21b">IA21b</label>
+				<div v-for="classe in classes" v-bind:key="classe">
+					<input v-model="filter[classe.toLowerCase()]" type="checkbox" :id="classe" />
+					<label for="classe">{{ classe }}</label>
 				</div>
 			</div>
 			<div class="buttonContainer">
-				<button @click="filterStudents">next</button>
+				<button style="padding: 5px 20px" @click="filterStudents">start</button>
 			</div>
 		</div>
 
@@ -37,12 +29,6 @@
 					>
 						{{ stu.name }}
 					</p>
-				</div>
-				<div class="buttonContainer">
-					<button :class="answer !== null ? 'noselect' : ''" @click="checkAnswer">
-						check
-					</button>
-					<button @click="nextStudent">next</button>
 				</div>
 			</div>
 		</div>
@@ -67,6 +53,7 @@ export default {
 			filter: { im21a: true, ia21a: true, ia21b: true },
 			amountCorrect: -1,
 			wrongStudents: [],
+			classes: new Set(),
 		};
 	},
 
@@ -79,6 +66,8 @@ export default {
 
 		for (let i = 0; i < data.length; i++) {
 			this.visibleStudents.push(this.data[i]);
+
+			this.classes.add(this.data[i].className);
 		}
 
 		document
@@ -153,6 +142,12 @@ export default {
 			if (this.answer == null) {
 				this.selectedIndex = index;
 				this.newStudent = false;
+
+				this.checkAnswer();
+
+				setTimeout(() => {
+					this.nextStudent();
+				}, 2000);
 			}
 		},
 
@@ -169,7 +164,7 @@ export default {
 			if (this.answer) {
 				this.amountCorrect++;
 			} else {
-				this.wrongStudents.push(this.visibleStudents[this.activeIndex]);
+				this.visibleStudents.push(this.visibleStudents[this.activeIndex]);
 			}
 
 			this.newStudent = true;
@@ -274,16 +269,16 @@ img {
 }
 .container > div,
 .auswahlContainer {
+	margin: 10px;
 	padding: 15px;
-	width: 95vw;
-	background-color: aliceblue;
-	border-radius: 20px;
 	margin-right: 10px;
+	width: 90vw;
 	height: 80vh;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+	box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+	border-radius: 15px;
 }
 
 .auswahlContainer {
@@ -325,15 +320,15 @@ img {
 }
 
 .selectedName:hover {
-	background-color: #334155 !important;
+	background-color: #334155;
 }
 
 .correct {
-	background-color: green;
+	background-color: green !important;
 }
 
 .wrong {
-	background-color: red;
+	background-color: red !important;
 }
 
 .noselect {
