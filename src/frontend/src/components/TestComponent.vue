@@ -3,12 +3,16 @@
   <select name="class" id="classNames"
           @change="updateClass($event)"
   >
+    <option value="all">
+      Alle
+    </option>
     <option
         v-for="(className, i) in this.classes" :key="i"
         :value="className"
     >
       {{ className }}
     </option>
+
   </select>
   <button class="btn_1"
       v-if="index != size  "
@@ -73,7 +77,6 @@ export default {
   async mounted() {
     const res = await axios.get('/students/list');
     this.students = await res.data;
-    //this.students.push("")
     this.studentsAll = this.students;
     this.wrongs1 = new Array();
     this.wrongs2 = new Array();
@@ -84,17 +87,19 @@ export default {
         this.classes.push(this.students[i].className);
       }
     }
-    console.log(this.classes);
-    this.students = this.studentsAll.filter(item => item.className === this.classes[0])
     this.size = this.students.length;
-    console.log(this.students)
   },
   methods: {
     updateClass(event) {
       let className = event.target.value
-      this.students = this.studentsAll.filter(item => item.className === className)
-      console.log(this.students)
-      this.size = this.students.length;
+      this.index = 0;
+      if (className != "all"){
+        this.students = this.studentsAll.filter(item => item.className === className)
+        this.size = this.students.length;
+      }else {
+        this.students = this.studentsAll;
+        this.size = this.students.length;
+      }
     },
     evaluate() {
       this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
@@ -104,8 +109,6 @@ export default {
         this.wrong++;
         this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
         this.wrongs1.push(this.students[this.index])
-        console.log("index:" + this.index)
-        console.log("size:" + this.size)
       } else if (this.wrongs1.length == 0) {
         this.finish = true;
       }
@@ -116,7 +119,6 @@ export default {
       if (this.index < this.size - 1) {
         this.right++;
         this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
-        console.log("index:" + this.index)
       } else if (this.wrongs1.length == 0) {
         this.finish = true;
       }
@@ -124,7 +126,6 @@ export default {
     },
 
     loadWrong() {
-      console.log(this.wrongs1)
       this.students = this.wrongs1;
       this.students.push("");
       this.size = this.students.length;
