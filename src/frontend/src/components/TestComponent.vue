@@ -105,12 +105,12 @@ export default {
       }
     },
     evaluate() {
-      this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
+      this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
     },
     wrongU() {
       if (this.index < this.size - 1) {
         this.wrong++;
-        this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
+        this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
         this.wrongs1.push(this.students[this.index])
       } else if (this.wrongs1.length == 0) {
         this.finish = true;
@@ -121,7 +121,7 @@ export default {
     rightU() {
       if (this.index < this.size - 1) {
         this.right++;
-        this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
+        this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
       } else if (this.wrongs1.length == 0) {
         this.finish = true;
       }
