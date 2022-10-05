@@ -88,10 +88,7 @@ export default {
 
 			document
 				.querySelector(':root')
-				.style.setProperty(
-					'--translate-value',
-					-100 / (this.visibleStudents.length + 1) + '%'
-				);
+				.style.setProperty('--translate-value', `calc(-1 * ${100}vw)`);
 
 			this.visibleStudents.sort(() => Math.random() - Math.random());
 
@@ -164,7 +161,8 @@ export default {
 			if (this.answer) {
 				this.amountCorrect++;
 			} else {
-				this.visibleStudents.push(this.visibleStudents[this.activeIndex]);
+				if (this.visibleStudents > 0)
+					this.visibleStudents.push(this.visibleStudents[this.activeIndex]);
 			}
 
 			this.newStudent = true;
@@ -177,7 +175,7 @@ export default {
 				.querySelector(':root')
 				.style.setProperty(
 					'--current-translate-value',
-					(-100 / (this.visibleStudents.length + 1)) * (this.activeIndex + 1) + '%'
+					`calc(-1 * calc(${100 * (this.activeIndex + 1)}vw))`
 				);
 
 			this.activeIndex++;
@@ -269,10 +267,9 @@ img {
 }
 .container > div,
 .auswahlContainer {
-	margin: 10px;
 	padding: 15px;
-	margin-right: 10px;
-	width: 90vw;
+	margin: 10px;
+	width: calc(100vw - 50px);
 	height: 80vh;
 	display: flex;
 	align-items: center;
