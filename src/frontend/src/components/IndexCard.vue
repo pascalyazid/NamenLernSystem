@@ -2,6 +2,7 @@
   <div>
     <div class="scene scene--card">
       <div
+          id="card"
           class="card"
           @click="cardOne == 'start' ? (cardOne = 'flipped' ) : (cardOne = 'start' )"
           v-bind:class="{ flipme: cardOne == 'flipped' }">
@@ -21,12 +22,18 @@
 
 export default {
   name: "IndexCard",
-  props: ['firstName', 'lastName', 'id'],
-  data() {
+  props: ['firstName', 'lastName', 'id', 'status'],
+  data: function () {
     return {
-      cardOne: ""
-    };
+      cardOne: "",
+    }
   },
+  watch: {
+    firstName: function() {
+      this.cardOne = "start"
+    }
+  }
+
 }
 </script>
 
