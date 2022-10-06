@@ -3,7 +3,7 @@
 		<h1>NamenLernSystem</h1>
 		<nav>
 			<p @click="toggle(1)">Home</p>
-			<p @click="toggle(4)">Multiple-Choise</p>
+			<p @click="toggle(4)">Multiple-Choice</p>
 			<p @click="toggle(2)">Karteikarten</p>
 			<p @click="toggle(3)">Download</p>
 			<UpdateImages />
@@ -80,7 +80,7 @@ export default {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	color: #2c3e50;
+	color: #c3e50;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
@@ -131,6 +131,6 @@ main > * {
 
 footer {
 	text-align: center;
-	margin: 2px 0;
+	margin: px 0;
 }
 </style>
