@@ -90,7 +90,6 @@ export default {
   },
   methods: {
     updateClass(event) {
-      //console.log(event)
       if(typeof event !== 'undefined') {
         let className = event.target.value
         this.index = 0;
@@ -99,11 +98,17 @@ export default {
           this.size = this.students.length;
           this.yes = true
           this.no = true
+          this.right = 0;
+          this.wrong = 0;
+          this.result = 'Resultat: '
         }else {
           this.students = this.studentsAll;
           this.size = this.students.length;
           this.yes = true
           this.no = true
+          this.right = 0;
+          this.wrong = 0;
+          this.result = 'Resultat: '
         }
       }
       else {
@@ -111,12 +116,14 @@ export default {
         this.size = this.students.length;
         this.yes = true
         this.no = true
+        this.right = 0;
+        this.wrong = 0;
+        this.result = 'Resultat: '
       }
 
     },
     evaluate() {
       this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
-      console.log("evaluated")
       if (this.wrongs.length == 0) {
         this.finish = true;
         this.yes = false
@@ -141,14 +148,10 @@ export default {
 
       } else if (this.wrongs.length == 0) {
         this.finish = true;
-        console.log("finished")
       }
       if(this.finish) {
         this.index = this.size
       }
-      console.log(this.wrongs.length == 0)
-      console.log("size: " + this.size)
-      console.log("index: " + this.index)
       this.index++;
 
     },
@@ -156,18 +159,12 @@ export default {
       if (this.index < this.size - 1) {
         this.right++;
         this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
-        console.log(this.wrongs.length == 0)
-        console.log("size: " + this.size)
       } else if (this.wrongs.length == 0) {
         this.finish = true;
-        console.log("finished")
       }
       if(this.finish) {
         this.index = this.size
       }
-      console.log(this.wrongs.length == 0)
-      console.log("size: " + this.size)
-      console.log("index: " + this.index)
       this.index++;
     },
 
