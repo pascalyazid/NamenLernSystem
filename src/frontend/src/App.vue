@@ -3,8 +3,8 @@
 		<h1>NamenLernSystem</h1>
 		<nav>
 			<p @click="toggle(1)">Home</p>
-			<p @click="toggle(4)">Multiple-Choise</p>
-			<p @click="toggle(2)">Karteikarten</p>
+			<p @click="toggle(4)">Multiple-Choice</p>
+			<p @click="toggle()">Karteikarten</p>
 			<p @click="toggle(3)">Download</p>
 			<UpdateImages />
 		</nav>
@@ -13,7 +13,7 @@
 		<Home v-if="showHome" />
 		<TestComponent v-if="showTestComponent" />
 		<Download v-if="showDownload" />
-		<Lernen v-if="showLernen" />
+		<Lernen2 v-if="showLernen" />
 	</main>
 
 	<footer>@Copyrights Quick-IT AG</footer>
@@ -24,11 +24,11 @@ import UpdateImages from '@/components/UpdateImages';
 import Home from '@/components/Home';
 import TestComponent from '@/components/TestComponent';
 import Download from '@/components/Download';
-import Lernen from '@/components/Lernen';
+import Lernen2 from '@/components/Lernen2';
 
 export default {
 	name: 'App',
-	components: { UpdateImages, TestComponent, Home, Download, Lernen },
+	components: { UpdateImages, TestComponent, Home, Download, Lernen2 },
 
 	mounted() {
 		this.emitter.on('toggle', (num) => {
@@ -80,7 +80,7 @@ export default {
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	color: #2c3e50;
+	color: #c3e50;
 	display: flex;
 	justify-content: space-between;
 	flex-direction: column;
@@ -131,6 +131,6 @@ main > * {
 
 footer {
 	text-align: center;
-	margin: 2px 0;
+	margin: px 0;
 }
 </style>

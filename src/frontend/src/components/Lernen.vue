@@ -6,7 +6,7 @@
 			<div class="inputContainer">
 				<div v-for="classe in classes" v-bind:key="classe">
 					<input v-model="filter[classe.toLowerCase()]" type="checkbox" :id="classe" />
-					<label for="classe">{{ classe }}</label>
+					<label :for="classe">{{ classe }}</label>
 				</div>
 			</div>
 			<div class="buttonContainer">
@@ -29,6 +29,8 @@
 					>
 						{{ stu.name }}
 					</p>
+
+					{{ newStudent }}
 				</div>
 			</div>
 		</div>
@@ -158,10 +160,12 @@ export default {
 				return;
 			}
 
+			console.log(this.visibleStudents);
+
 			if (this.answer) {
 				this.amountCorrect++;
 			} else {
-				if (this.visibleStudents > 0)
+				if (this.activeIndex >= 0)
 					this.visibleStudents.push(this.visibleStudents[this.activeIndex]);
 			}
 
