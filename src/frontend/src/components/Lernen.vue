@@ -39,6 +39,25 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="endContainer">
+			<h1 style="text-align: center">Alle Karten gelernt</h1>
+			<svg
+				@click="reset"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke-width="1.5"
+				stroke="currentColor"
+				style="text-align: center"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+				/>
+			</svg>
+		</div>
 	</div>
 </template>
 
@@ -53,7 +72,6 @@ export default {
 			selectedClassLength: 0,
 			filter: {},
 
-			data: [],
 			students: {},
 			visibleStudentsOrder: [],
 
@@ -61,10 +79,9 @@ export default {
 			selectedStudentID: null,
 
 			activeStudentIndex: -1,
-			activeNames: [],
-			selectedIndex: -1,
+
 			answered: false,
-			newStudent: true,
+			gameFinished: false,
 
 			numOfCorrectAnswers: 0,
 		};
@@ -73,21 +90,21 @@ export default {
 	async mounted() {
 		const res = await axios.get('/students/list');
 
-		const data = await res.data;
+		let data = await res.data;
 
-		this.data = data.map((e) => {
+		data = data.map((e) => {
 			this.classes.add(e.className);
 
 			return { ...e, img: '/students/load?id=' + e.id };
 		});
 
-		for (let i = 0; i < this.data.length; i++) {
-			this.students[this.data[i].id] = this.data[i];
-			this.visibleStudentsOrder.push(this.data[i].id);
+		for (let i = 0; i < data.length; i++) {
+			this.students[data[i].id] = data[i];
+			this.visibleStudentsOrder.push(data[i].id);
 		}
 
-		for (let i = 0; i < this.data.length; i++) {
-			this.students[this.data[i].id].names = this.setNames(this.data[i]);
+		for (let i = 0; i < data.length; i++) {
+			this.students[data[i].id].names = this.setNames(data[i]);
 		}
 
 		document.querySelector(':root').style.setProperty('--translate-value', `-${100}vw`);
@@ -95,6 +112,11 @@ export default {
 
 	methods: {
 		startLearnungApp() {
+			if (!Object.values(this.filter).includes(true))
+				return alert('Bitte wähle mindestens 1 Klasse aus.');
+
+			document.querySelector(':root').style.setProperty('--translate-value', `-${100}vw`);
+
 			this.visibleStudentsOrder = this.visibleStudentsOrder
 				.filter((e) => {
 					if (this.filter[this.students[e].className.toLowerCase()]) {
@@ -168,6 +190,9 @@ export default {
 
 			this.activeStudentIndex++;
 
+			if (this.activeStudentIndex >= this.visibleStudentsOrder.length)
+				return (this.gameFinished = true);
+
 			this.currentCorrectStudentID = this.visibleStudentsOrder[this.activeStudentIndex];
 			this.selectedStudentID = null;
 		},
@@ -194,6 +219,47 @@ export default {
 				' ' +
 				firstToUpper(this.students[id].lastName)
 			);
+		},
+
+		async reset() {
+			this.classes = new Set();
+			this.selectedClassLength = 0;
+			this.filter = {};
+			this.students = {};
+			this.visibleStudentsOrder = [];
+			this.currentCorrectStudentID = null;
+			this.selectedStudentID = null;
+			this.activeStudentIndex = -1;
+			this.answered = false;
+			this.gameFinished = false;
+			this.numOfCorrectAnswers = 0;
+
+			const container = document.querySelector('.container');
+
+			container.classList.remove('animation');
+			container.offsetWidth;
+			container.classList.add('animation');
+
+			document.querySelector(':root').style.setProperty('--translate-value', `${100}vw`);
+
+			const res = await axios.get('/students/list');
+
+			let data = await res.data;
+
+			data = data.map((e) => {
+				this.classes.add(e.className);
+
+				return { ...e, img: '/students/load?id=' + e.id };
+			});
+
+			for (let i = 0; i < data.length; i++) {
+				this.students[data[i].id] = data[i];
+				this.visibleStudentsOrder.push(data[i].id);
+			}
+
+			for (let i = 0; i < data.length; i++) {
+				this.students[data[i].id].names = this.setNames(data[i]);
+			}
 		},
 	},
 };
@@ -265,6 +331,19 @@ img {
 	justify-content: space-between;
 	box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
 	border-radius: 15px;
+}
+
+.endContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around !important;
+	align-items: center;
+	padding: 0 20px;
+}
+
+.endContainer > svg {
+	width: 40px;
+	height: 40px;
 }
 
 .auswahlContainer {
