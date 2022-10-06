@@ -5,6 +5,7 @@
 			<p @click="toggle(1)">Home</p>
 			<p @click="toggle(4)">Multiple-Choice</p>
 			<p @click="toggle(2)">Karteikarten</p>
+      <p @click="toggle(5)">History</p>
 			<p @click="toggle(3)">Download</p>
 			<UpdateImages />
 		</nav>
@@ -14,6 +15,7 @@
 		<TestComponent v-if="showTestComponent" />
 		<Download v-if="showDownload" />
 		<Lernen v-if="showLernen" />
+    <History v-if="showHistory" />
 	</main>
 
 	<footer>© Quick-IT AG</footer>
@@ -25,10 +27,11 @@ import Home from '@/components/Home';
 import TestComponent from '@/components/TestComponent';
 import Download from '@/components/Download';
 import Lernen from '@/components/Lernen';
+import History from "@/components/History";
 
 export default {
 	name: 'App',
-	components: { UpdateImages, TestComponent, Home, Download, Lernen },
+	components: {History, UpdateImages, TestComponent, Home, Download, Lernen },
 
 	mounted() {
 		this.emitter.on('toggle', (num) => {
@@ -41,6 +44,7 @@ export default {
 		showTestComponent: false,
 		showDownload: false,
 		showLernen: false,
+    showHistory: false
 	}),
 	methods: {
 		toggle(num) {
@@ -50,25 +54,36 @@ export default {
 					this.showTestComponent = false;
 					this.showDownload = false;
 					this.showLernen = false;
-					break;
+          this.showHistory = false;
+          break;
 				case 2:
 					this.showHome = false;
 					this.showTestComponent = true;
 					this.showDownload = false;
 					this.showLernen = false;
-					break;
+          this.showHistory = false;
+          break;
 				case 3:
 					this.showHome = false;
 					this.showTestComponent = false;
 					this.showDownload = true;
 					this.showLernen = false;
-					break;
+          this.showHistory = false;
+          break;
 				case 4:
 					this.showHome = false;
 					this.showTestComponent = false;
 					this.showDownload = false;
 					this.showLernen = true;
+          this.showHistory = false;
 					break;
+        case 5:
+          this.showHome = false;
+          this.showTestComponent = false;
+          this.showDownload = false;
+          this.showLernen = false;
+          this.showHistory = true;
+          break;
 			}
 		},
 	},

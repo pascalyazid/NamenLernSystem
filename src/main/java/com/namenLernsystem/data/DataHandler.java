@@ -1,8 +1,11 @@
 package com.namenLernsystem.data;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.namenLernsystem.model.HistoryEntry;
 import com.namenLernsystem.model.Student;
 import com.namenLernsystem.service.Config;
 import org.apache.tomcat.util.codec.binary.StringUtils;
@@ -17,6 +20,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DataHandler {
+
+    public static void writeHistoryJSON(List<HistoryEntry> historyEntries) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writeValue(new File(String.valueOf(Paths.get(Config.getProperty("historyJSON")))), historyEntries);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<HistoryEntry> readHistoryJSON() {
+        List<HistoryEntry> historyEntries = new ArrayList<>();
+        try {
+            Type listType = new TypeToken<List<HistoryEntry>>() {
+            }.getType();
+
+            InputStream fis = new FileInputStream(Config.getProperty("historyJSON"));
+            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+            Reader reader = new BufferedReader(isr);
+            historyEntries = new Gson().fromJson(reader, listType);
+            if (historyEntries == null){
+                historyEntries = new ArrayList<>();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return historyEntries;
+    }
+
+   /* public static void insertHistoryEntry(HistoryEntry historyEntry) {
+        getHistoryEntries().add(historyEntry);
+        writeHistoryJSON();
+    }*/
 
     public static List<Student> readJSON() {
         List<Student> students;
@@ -83,6 +121,8 @@ public class DataHandler {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
         return students;
     }
 }
