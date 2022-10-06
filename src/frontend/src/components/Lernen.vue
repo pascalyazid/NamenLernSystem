@@ -205,7 +205,7 @@ export default {
 						dateStyle: 'short',
 					})} - Multiple Choice ${
 						(100 / this.activeStudentIndex) * this.numOfCorrectAnswers
-					}% korrekt.`
+					}% korrekt. [${Object.keys(this.filter).join(', ')}]`
 				);
 
 				await fetch('/students/writeHistory', {
