@@ -4,7 +4,7 @@
 		<nav>
 			<p @click="toggle(1)">Home</p>
 			<p @click="toggle(4)">Multiple-Choice</p>
-			<p @click="toggle()">Karteikarten</p>
+			<p @click="toggle(2)">Karteikarten</p>
 			<p @click="toggle(3)">Download</p>
 			<UpdateImages />
 		</nav>
