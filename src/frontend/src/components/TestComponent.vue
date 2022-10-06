@@ -157,7 +157,7 @@ export default {
 
         this.uploadResult(dateTime + " - " + "Karteikarten "
             + ((this.right / (this.wrong + this.right) * 100).toFixed(2) + "%")
-            + " korrekt, " + "Klasse: " + className)
+            + " korrekt. " + " [" + className +  "] ")
       }
 
       if (this.finish) {
