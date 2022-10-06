@@ -157,7 +157,7 @@ export default {
 			}, 2000);
 		},
 
-		nextStudent() {
+		async nextStudent() {
 			const container = document.querySelector('.container');
 
 			container.classList.remove('animation');
@@ -190,9 +190,31 @@ export default {
 
 			this.activeStudentIndex++;
 
-			if (this.activeStudentIndex >= this.visibleStudentsOrder.length)
-				return (this.gameFinished = true);
+			if (this.activeStudentIndex >= this.visibleStudentsOrder.length) {
+				this.gameFinished = true;
 
+				const currentTime = new Date();
+
+				const formData = new FormData();
+				formData.set(
+					'message',
+					`${currentTime.toLocaleTimeString('en-GB', {
+						hour: 'numeric',
+						minute: 'numeric',
+					})}@${currentTime.toLocaleDateString('en-GB', {
+						dateStyle: 'short',
+					})} - Multiple Choice ${
+						(100 / this.activeStudentIndex) * this.numOfCorrectAnswers
+					}% korrekt.`
+				);
+
+				await fetch('/students/writeHistory', {
+					method: 'POST',
+					body: formData,
+				});
+
+				return;
+			}
 			this.currentCorrectStudentID = this.visibleStudentsOrder[this.activeStudentIndex];
 			this.selectedStudentID = null;
 		},
