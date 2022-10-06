@@ -134,7 +134,7 @@ export default {
         this.yes = false
         this.no = false
       }
-      if(this.index == this.size -1) {
+      if(this.index == this.size -1 && !this.finish) {
         this.yes = false
         this.no = false
         this.relearn = true;
