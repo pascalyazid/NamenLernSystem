@@ -86,6 +86,7 @@ export default {
     no: true,
     finish: false,
     result: 'Resultat:',
+    resultMessage: '',
     size: 0,
     relearn: false,
     testStudent: {},
@@ -142,21 +143,35 @@ export default {
 
     },
     evaluate() {
+      let currentdate = new Date();
+      let dateTime = ((currentdate.getHours() < 10) ? "0" : "") + currentdate.getHours() + ":" + ((currentdate.getMinutes() < 10) ? "0" : "") + currentdate.getMinutes()
+          + "@" + currentdate.getDate() + "/" + currentdate.getMonth() + "/" + currentdate.getFullYear()
+      let e = document.getElementById("classNames");
+      let className = e.options[e.selectedIndex].text;
+
       this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2) + "%"
       if (this.wrongs.length == 0) {
         this.finish = true;
         this.yes = false
         this.no = false
+
+        this.uploadResult(dateTime + " - " + "Karteikarten "
+            + ((this.right / (this.wrong + this.right) * 100).toFixed(2) + "%")
+            + " korrekt, " + "Klasse: " + className)
       }
 
       if (this.finish) {
         this.yes = false
         this.no = false
+
       }
       if (this.index == this.size - 1 && !this.finish) {
         this.yes = false
         this.no = false
         this.relearn = true;
+        this.uploadResult(dateTime + " - " + "Karteikarten"
+            + ((this.right / (this.wrong + this.right) * 100).toFixed(2) + "%")
+            + " korrekt, " + "Klasse: " + className)
       }
     },
     wrongU() {
@@ -235,6 +250,22 @@ export default {
     clearNote() {
       let noteField = document.getElementById("addNote")
       noteField.value = " "
+    },
+
+    uploadResult(message) {
+      let formData = new FormData();
+      formData.append('message', message);
+      axios.post("/students/writeHistory", formData)
+          .then((response) => {
+            if (response.status == 200) {
+              console.log("Log saved")
+            }
+          })
+          .catch((error) => {
+            if (error.response.status == 400) {
+              console.log("Error saving Log")
+            }
+          })
     }
   }
 }
