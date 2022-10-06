@@ -25,6 +25,7 @@ public class Student {
         this.lastName = lastName;
         this.className = className;
         this.path = path;
+        this.note = "";
     }
 
     public String getId() {

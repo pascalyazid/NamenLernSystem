@@ -22,10 +22,11 @@ import java.util.List;
 @RequestMapping("/students")
 public class StudentController {
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Encoded
     @ResponseBody
     ResponseEntity<List<Student>> allStudents() throws IOException {
+        System.out.println(DataHandler.readJSON().get(15).getLastName());
         return new ResponseEntity<List<Student>>(DataHandler.readJSON(), HttpStatus.OK);
     }
 
@@ -49,8 +50,6 @@ public class StudentController {
         if (students.stream().anyMatch(student -> student.getId().equals(id))) {
             Student student = students.stream().filter(student1 -> student1.getId().equals(id))
                     .findFirst().orElseThrow(() -> new FileNotFoundException(id));
-            //String path = Config.getProperty("images") + "/" + student.getPath();
-            System.out.println(student.getPath());
             InputStream fis = new FileInputStream(student.getPath());
             return new ResponseEntity<byte[]>(IOUtils.toByteArray(fis), HttpStatus.OK).getBody();
         } else {
