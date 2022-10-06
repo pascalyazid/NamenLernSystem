@@ -1,6 +1,7 @@
 package com.namenLernsystem.service;
 
 import com.namenLernsystem.data.DataHandler;
+import com.namenLernsystem.model.HistoryEntry;
 import com.namenLernsystem.model.Student;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,20 @@ public class StudentController {
         } else {
             return new ResponseEntity<String>("Image not found", HttpStatus.NOT_FOUND).toString().getBytes();
         }
+    }
+    @PostMapping(value = "/writeHistory")
+    public void writeHistroy(
+          @FormParam("message") String message
+    ){
+       HistoryEntry historyEntry = new HistoryEntry(message);
+       List<HistoryEntry> historyEntries = DataHandler.readHistoryJSON();
+       historyEntries.add(historyEntry);
+       DataHandler.writeHistoryJSON(historyEntries);
+    }
+
+    @RequestMapping(value = "/listHistory")
+    public ResponseEntity<List<HistoryEntry>> writeHistroy(){
+        return new ResponseEntity<List<HistoryEntry>>(DataHandler.readHistoryJSON(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/updateNote")
