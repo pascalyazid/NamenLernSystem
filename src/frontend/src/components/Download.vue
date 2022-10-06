@@ -51,7 +51,7 @@ export default {
           var htmlData = "<!DOCTYPE html><head></head><body></body></head><div style='display: flex; flex-wrap: wrap; justify-content: space-between;'>";
           for (let i = 0; i < data.length; i++) {
             if (this.dataClasses.includes(data[i].className)){
-              htmlData += "<div><img src='" + data[i].path + "' style='width: 150px; height: 150px; object-fit: cover'/> " +
+              htmlData += "<div style='padding: 1%; background-color: #bcd0d7; margin-bottom: 2%; border-radius: 15px'><img src='" + data[i].path + "' style='width: 150px; height: 150px; object-fit: cover'/> " +
                   "<p style='width: min-content'>" + data[i].firstName + " " + data[i].lastName + "</div></p><br/>";
             }
           }
