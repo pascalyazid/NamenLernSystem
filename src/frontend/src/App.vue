@@ -13,7 +13,7 @@
 		<Home v-if="showHome" />
 		<TestComponent v-if="showTestComponent" />
 		<Download v-if="showDownload" />
-		<Lernen2 v-if="showLernen" />
+		<Lernen v-if="showLernen" />
 	</main>
 
 	<footer>© Quick-IT AG</footer>
@@ -24,11 +24,11 @@ import UpdateImages from '@/components/UpdateImages';
 import Home from '@/components/Home';
 import TestComponent from '@/components/TestComponent';
 import Download from '@/components/Download';
-import Lernen2 from '@/components/Lernen2';
+import Lernen from '@/components/Lernen';
 
 export default {
 	name: 'App',
-	components: { UpdateImages, TestComponent, Home, Download, Lernen2 },
+	components: { UpdateImages, TestComponent, Home, Download, Lernen },
 
 	mounted() {
 		this.emitter.on('toggle', (num) => {

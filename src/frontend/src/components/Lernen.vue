@@ -1,5 +1,8 @@
 <template>
-	<div id="score" v-if="amountCorrect >= 0">{{ amountCorrect }}/{{ activeIndex }}</div>
+	<div id="score" v-if="activeStudentIndex >= 0">
+		{{ numOfCorrectAnswers }}/{{ activeStudentIndex }}
+		<span v-if="activeStudentIndex >= selectedClassLength">{{ ' ' }}repetition</span>
+	</div>
 	<div class="container">
 		<div class="auswahlContainer">
 			<h2>Klassenauswahl</h2>
@@ -10,27 +13,29 @@
 				</div>
 			</div>
 			<div class="buttonContainer">
-				<button style="padding: 5px 20px" @click="filterStudents">start</button>
+				<button style="padding: 2px 20px" @click="startLearnungApp">start</button>
 			</div>
 		</div>
 
-		<div class="cardContainer" v-for="student in visibleStudents" v-bind:key="student.id">
+		<div
+			class="cardContainer"
+			v-for="student in visibleStudentsOrder"
+			v-bind:key="student"
+		>
 			<div>
-				<img :src="student.img" alt="alt" />
+				<img :src="students[student].img" alt="alt" />
 			</div>
 
 			<div class="optionContainer">
-				<div v-if="!newStudent" class="nameContainer">
+				<div class="nameContainer">
 					<p
-						@click="setSelectedIndex(stu.index)"
-						v-for="stu in activeNames"
-						v-bind:key="stu.uuid + Date.now()"
-						:class="optionStyle(stu.index)"
+						@click="selectName(stu)"
+						v-for="stu in students[student].names"
+						v-bind:key="stu"
+						:class="optionStyle(stu)"
 					>
-						{{ stu.name }}
+						{{ getFullStudentName(stu) }}
 					</p>
-
-					{{ newStudent }}
 				</div>
 			</div>
 		</div>
@@ -39,23 +44,29 @@
 
 <script>
 import axios from 'axios';
-import { v4 } from 'uuid';
 
 export default {
 	name: 'GabrielLernen',
 	data() {
 		return {
+			classes: new Set(),
+			selectedClassLength: 0,
+			filter: {},
+
 			data: [],
-			visibleStudents: [],
-			activeIndex: -1,
+			students: {},
+			visibleStudentsOrder: [],
+
+			currentCorrectStudentID: null,
+			selectedStudentID: null,
+
+			activeStudentIndex: -1,
 			activeNames: [],
 			selectedIndex: -1,
-			answer: true,
+			answered: false,
 			newStudent: true,
-			filter: {},
-			amountCorrect: -1,
-			wrongStudents: [],
-			classes: new Set(),
+
+			numOfCorrectAnswers: 0,
 		};
 	},
 
@@ -64,154 +75,125 @@ export default {
 
 		const data = await res.data;
 
-		this.data = data.map((e) => ({ ...e, img: '/students/load?id=' + e.id }));
+		this.data = data.map((e) => {
+			this.classes.add(e.className);
 
-		for (let i = 0; i < data.length; i++) {
-			this.visibleStudents.push(this.data[i]);
+			return { ...e, img: '/students/load?id=' + e.id };
+		});
 
-			this.classes.add(this.data[i].className);
+		for (let i = 0; i < this.data.length; i++) {
+			this.students[this.data[i].id] = this.data[i];
+			this.visibleStudentsOrder.push(this.data[i].id);
 		}
 
-		document
-			.querySelector(':root')
-			.style.setProperty(
-				'--translate-value',
-				-100 / (this.visibleStudents.length + 1) + '%'
-			);
+		for (let i = 0; i < this.data.length; i++) {
+			this.students[this.data[i].id].names = this.setNames(this.data[i]);
+		}
 
-		this.setNames();
+		document.querySelector(':root').style.setProperty('--translate-value', `-${100}vw`);
 	},
 
 	methods: {
-		filterStudents() {
-			this.visibleStudents = this.visibleStudents.filter((e) =>
-				this.filter[e.className.toLowerCase()] ? e : undefined
-			);
+		startLearnungApp() {
+			this.visibleStudentsOrder = this.visibleStudentsOrder
+				.filter((e) => {
+					if (this.filter[this.students[e].className.toLowerCase()]) {
+						return e;
+					}
 
-			document
-				.querySelector(':root')
-				.style.setProperty('--translate-value', `calc(-1 * ${100}vw)`);
+					return undefined;
+				})
+				.sort(() => Math.random() - Math.random());
 
-			this.visibleStudents.sort(() => Math.random() - Math.random());
+			this.selectedClassLength = this.visibleStudentsOrder.length;
 
 			this.nextStudent();
 		},
 
-		setNames() {
-			this.activeNames.push({
-				name:
-					firstToUpper(this.visibleStudents[this.activeIndex].firstName) +
-					' ' +
-					firstToUpper(this.visibleStudents[this.activeIndex].lastName),
-				index: this.activeIndex,
-				id: this.visibleStudents[this.activeIndex].id,
-				uuid: v4(),
-			});
+		setNames(student) {
+			const names = [];
 
-			const addedIds = [];
+			names.push(student.id);
 
-			for (let i = 0; i < 4; i++) {
-				const index = rng(0, this.visibleStudents.length);
+			while (names.length < 5) {
+				const i = rng(0, this.visibleStudentsOrder.length);
 
-				if (
-					this.visibleStudents[index].id == this.visibleStudents[this.activeIndex].id ||
-					addedIds.includes(this.visibleStudents[index].id)
-				) {
-					i -= 1;
-					continue;
-				}
+				if (names.includes(this.students[this.visibleStudentsOrder[i]].id)) continue;
 
-				addedIds.push(this.visibleStudents[index].id);
-
-				this.activeNames.push({
-					name:
-						firstToUpper(this.data[index].firstName) +
-						' ' +
-						firstToUpper(this.data[index].lastName),
-					index,
-					id: this.data[index].id,
-					uuid: v4(),
-				});
+				names.push(this.students[this.visibleStudentsOrder[i]].id);
 			}
 
-			this.activeNames.sort(() => Math.random() - Math.random());
+			return names.sort(() => Math.random() - Math.random());
 		},
 
-		setSelectedIndex(index) {
-			if (this.answer == null) {
-				this.selectedIndex = index;
-				this.newStudent = false;
+		selectName(id) {
+			this.answered = true;
+			this.selectedStudentID = id;
 
-				this.checkAnswer();
-
-				setTimeout(() => {
-					this.nextStudent();
-				}, 2000);
-			}
-		},
-
-		checkAnswer() {
-			this.answer = this.activeIndex == this.selectedIndex;
+			setTimeout(() => {
+				this.nextStudent();
+			}, 2000);
 		},
 
 		nextStudent() {
-			if (this.answer == null) {
-				alert('bitte ein Namen auswählen und checken!!!');
-				return;
-			}
+			const container = document.querySelector('.container');
 
-			console.log(this.visibleStudents);
-
-			if (this.answer) {
-				this.amountCorrect++;
-			} else {
-				if (this.activeIndex >= 0)
-					this.visibleStudents.push(this.visibleStudents[this.activeIndex]);
-			}
-
-			this.newStudent = true;
-			const ctnr = document.querySelector('.container');
-
-			ctnr.classList.remove('animation');
-			ctnr.offsetWidth;
-			setTimeout(() => {
-				this.newStudent = false;
-			}, 500);
+			container.classList.remove('animation');
+			container.offsetWidth;
+			container.classList.add('animation');
 
 			document
 				.querySelector(':root')
 				.style.setProperty(
 					'--current-translate-value',
-					`calc(-1 * calc(${100 * (this.activeIndex + 1)}vw))`
+					`-${100 * (this.activeStudentIndex + 1)}vw`
 				);
 
-			this.activeIndex++;
-			this.answer = null;
-			this.activeNames = [];
-			this.setNames();
-			ctnr.classList.add('animation');
-		},
+			this.answered = false;
 
-		optionStyle(index) {
-			let css = '';
+			if (
+				this.selectedStudentID == this.currentCorrectStudentID &&
+				this.activeStudentIndex >= 0
+			) {
+				this.numOfCorrectAnswers++;
+			} else {
+				if (this.activeStudentIndex >= 0) {
+					this.visibleStudentsOrder.push(this.currentCorrectStudentID);
 
-			if (this.newStudent) return;
-
-			if (index == this.selectedIndex) {
-				css += 'selectedName ';
-
-				if (this.answer !== null) {
-					css += this.answer ? 'correct ' : 'wrong ';
+					this.students[this.currentCorrectStudentID].names = this.students[
+						this.currentCorrectStudentID
+					].names.sort(() => Math.random() - Math.random());
 				}
 			}
 
-			if (this.answer !== null) {
-				css += 'noselect ';
+			this.activeStudentIndex++;
 
-				if (index == this.activeIndex) css += 'correct selectedName ';
+			this.currentCorrectStudentID = this.visibleStudentsOrder[this.activeStudentIndex];
+			this.selectedStudentID = null;
+		},
+
+		optionStyle(id) {
+			let css = '';
+
+			if (this.answered) {
+				if (id == this.selectedStudentID && id !== this.currentCorrectStudentID) {
+					css += 'wrong ';
+				}
+
+				if (id == this.currentCorrectStudentID) css += 'correct ';
+
+				css += 'noselect ';
 			}
 
 			return css;
+		},
+
+		getFullStudentName(id) {
+			return (
+				firstToUpper(this.students[id].firstName) +
+				' ' +
+				firstToUpper(this.students[id].lastName)
+			);
 		},
 	},
 };
@@ -250,7 +232,7 @@ img {
 }
 
 .container.animation {
-	animation: next 0.75s ease-in-out forwards;
+	animation: next 0.5s ease-in-out forwards;
 }
 
 .inputContainer {
@@ -275,8 +257,8 @@ img {
 .container > div,
 .auswahlContainer {
 	padding: 15px;
-	margin: 20px;
-	width: calc(100vw - 70px);
+	margin: 30px;
+	width: calc(100vw - 90px);
 	height: 80vh;
 	display: flex;
 	align-items: center;
@@ -317,21 +299,15 @@ img {
 	background-color: #d0d8dd;
 }
 
-.selectedName {
-	background-color: #334155;
+.correct {
 	color: #fff;
 	box-sizing: border-box;
-}
-
-.selectedName:hover {
-	background-color: #334155;
-}
-
-.correct {
 	background-color: green !important;
 }
 
 .wrong {
+	color: #fff;
+	box-sizing: border-box;
 	background-color: red !important;
 }
 
