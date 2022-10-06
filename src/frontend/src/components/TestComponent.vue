@@ -19,19 +19,17 @@
     />
     <div>
       <button id="btn_1"
-              v-if="index != size  "
+              v-if="yes"
               @click=" index == size -1 ? evaluate() : rightU()">
         <img src="@/assets/green.jpg" id="button_1">
       </button>
       <button id="btn_1"
-              v-if="index != size "
+              v-if="no"
               @click=" index == size -1 ? evaluate() : wrongU()">
         <img src="@/assets/red.jpg" id="button_2">
       </button>
     </div>
-    <button v-if="finish"
-            @click="reloadP"
-    >
+    <button v-if="finish" @click="reloadP">
       Neustart
     </button>
 
@@ -42,7 +40,7 @@
     <div class="result-item">
       {{ result }}
       <button
-          v-if="index == size -1 "
+          v-if="relearn"
           @click="loadWrong()">Falsche lernen
       </button>
     </div>
@@ -62,18 +60,17 @@ export default {
   data: () => ({
     students: [''],
     studentsAll: [],
-    wrongs1: [],
-    wrongs2: [],
+    wrongs: [],
     classes: [],
     index: 0,
     right: 0,
     wrong: 0,
-    normal: true,
-    wrong1: true,
-    wrong2: false,
+    yes: true,
+    no: true,
     finish: false,
     result: 'Resultat:',
     size: 0,
+    relearn: false,
     testStudent: {}
   }),
 
@@ -81,8 +78,7 @@ export default {
     const res = await axios.get('/students/list');
     this.students = await res.data;
     this.studentsAll = this.students;
-    this.wrongs1 = new Array();
-    this.wrongs2 = new Array();
+    this.wrongs = new Array();
     this.classes = new Array();
 
     for (let i in this.students) {
@@ -94,27 +90,65 @@ export default {
   },
   methods: {
     updateClass(event) {
-      let className = event.target.value
-      this.index = 0;
-      if (className != "all"){
-        this.students = this.studentsAll.filter(item => item.className === className)
-        this.size = this.students.length;
-      }else {
+      //console.log(event)
+      if(typeof event !== 'undefined') {
+        let className = event.target.value
+        this.index = 0;
+        if (className != "all"){
+          this.students = this.studentsAll.filter(item => item.className === className)
+          this.size = this.students.length;
+          this.yes = true
+          this.no = true
+        }else {
+          this.students = this.studentsAll;
+          this.size = this.students.length;
+          this.yes = true
+          this.no = true
+        }
+      }
+      else {
         this.students = this.studentsAll;
         this.size = this.students.length;
+        this.yes = true
+        this.no = true
       }
+
     },
     evaluate() {
       this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
+      console.log("evaluated")
+      if (this.wrongs.length == 0) {
+        this.finish = true;
+        this.yes = false
+        this.no = false
+      }
+
+      if(this.finish) {
+        this.yes = false
+        this.no = false
+      }
+      if(this.index == this.size -1) {
+        this.yes = false
+        this.no = false
+        this.relearn = true;
+      }
     },
     wrongU() {
       if (this.index < this.size - 1) {
         this.wrong++;
         this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
-        this.wrongs1.push(this.students[this.index])
-      } else if (this.wrongs1.length == 0) {
+        this.wrongs.push(this.students[this.index])
+
+      } else if (this.wrongs.length == 0) {
         this.finish = true;
+        console.log("finished")
       }
+      if(this.finish) {
+        this.index = this.size
+      }
+      console.log(this.wrongs.length == 0)
+      console.log("size: " + this.size)
+      console.log("index: " + this.index)
       this.index++;
 
     },
@@ -122,25 +156,43 @@ export default {
       if (this.index < this.size - 1) {
         this.right++;
         this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
-      } else if (this.wrongs1.length == 0) {
+        console.log(this.wrongs.length == 0)
+        console.log("size: " + this.size)
+      } else if (this.wrongs.length == 0) {
         this.finish = true;
+        console.log("finished")
       }
+      if(this.finish) {
+        this.index = this.size
+      }
+      console.log(this.wrongs.length == 0)
+      console.log("size: " + this.size)
+      console.log("index: " + this.index)
       this.index++;
     },
 
     loadWrong() {
-      this.students = this.wrongs1;
-      this.students.push("");
+      this.relearn = false;
+      this.students = this.wrongs;
       this.size = this.students.length;
       this.index = 0
       this.right = 0
       this.wrong = 0
       this.result = ''
-      this.wrongs1 = new Array();
-      console.log("size: " + this.size)
+      this.wrongs = new Array();
+      this.yes = true
+      this.no = true
     },
     reloadP() {
-      location.reload();
+      this.index = 0
+      this.right = 0
+      this.wrong = 0
+      this.result = ''
+      //this.wrongs = new Array();
+      let select = document.getElementById("classNames");
+      select.selectedIndex = 0;
+      this.updateClass()
+      this.finish = false
     }
   }
 }
