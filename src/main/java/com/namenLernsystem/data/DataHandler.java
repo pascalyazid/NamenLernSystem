@@ -5,10 +5,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.namenLernsystem.model.Student;
 import com.namenLernsystem.service.Config;
+import org.apache.tomcat.util.codec.binary.StringUtils;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +55,7 @@ public class DataHandler {
             File[] directories = new File[directoryListing.length];
             for (int i = 0; i < directoryListing.length; i++) {
                 directories[i] = new File(String.valueOf(directoryListing[i]));
+                //System.out.println(directories[i]);
                 File[] images = directories[i].listFiles(new FileFilter() {
                     @Override
                     public boolean accept(File file) {
@@ -62,6 +66,10 @@ public class DataHandler {
                     String fileName = images[j].getName();
                     if (fileName.contains(".")) {
                         fileName = fileName.substring(0, fileName.lastIndexOf("."));
+                        //System.out.println(fileName);
+                        byte[] bytes = StringUtils.getBytesUtf8(fileName);
+                        String lol = new String(bytes, StandardCharsets.UTF_8);
+                        System.out.println(lol);
                     }
                     String[] names = fileName.split("_");
 
