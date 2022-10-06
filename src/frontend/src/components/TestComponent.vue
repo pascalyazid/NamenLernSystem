@@ -1,44 +1,51 @@
 <template>
-
-  <select name="class" id="classNames"
-          @change="updateClass($event)"
-  >
-    <option
-        v-for="(className, i) in this.classes" :key="i"
-        :value="className"
+  <div id="karteiKarten">
+    <select name="class" id="classNames"
+            @change="updateClass($event)"
     >
-      {{ className }}
-    </option>
-  </select>
-  <button class="btn_1"
-      v-if="index != size  "
-      @click=" index == size -1 ? evaluate() : rightU()">
-    <img src="@/assets/green.png" class="button_1">
-  </button>
-  <IndexCard :firstName="students[index].firstName" :lastName="students[index].lastName" :id="students[index].id"
-             v-if="students != null && !finish"
-  />
-  <button class="btn_1"
-      v-if="index != size "
-      @click=" index == size -1 ? evaluate() : wrongU()">
-    <img src="@/assets/red.jpg" class="button_2">
-  </button>
-  <button v-if="finish"
-          @click="reloadP"
-  >
-    Neustart
-  </button>
+      <option value="all">
+        Alle
+      </option>
+      <option
+          v-for="(className, i) in this.classes" :key="i"
+          :value="className"
+      >
+        {{ className }}
+      </option>
 
-  <div>
-
-
-  </div>
-  <div class="result-item">
-    {{ result }}
-    <button
-        v-if="index == size -1 "
-        @click="loadWrong()">Falsche lernen
+    </select>
+    <IndexCard :firstName="students[index].firstName" :lastName="students[index].lastName" :id="students[index].id"
+               v-if="students != null && !finish"
+    />
+    <div>
+      <button id="btn_1"
+              v-if="index != size  "
+              @click=" index == size -1 ? evaluate() : rightU()">
+        <img src="@/assets/green.jpg" id="button_1">
+      </button>
+      <button id="btn_1"
+              v-if="index != size "
+              @click=" index == size -1 ? evaluate() : wrongU()">
+        <img src="@/assets/red.jpg" id="button_2">
+      </button>
+    </div>
+    <button v-if="finish"
+            @click="reloadP"
+    >
+      Neustart
     </button>
+
+    <div>
+
+
+    </div>
+    <div class="result-item">
+      {{ result }}
+      <button
+          v-if="index == size -1 "
+          @click="loadWrong()">Falsche lernen
+      </button>
+    </div>
   </div>
 </template>
 
@@ -65,7 +72,7 @@ export default {
     wrong1: true,
     wrong2: false,
     finish: false,
-    result: '',
+    result: 'Resultat:',
     size: 0,
     testStudent: {}
   }),
@@ -73,7 +80,6 @@ export default {
   async mounted() {
     const res = await axios.get('/students/list');
     this.students = await res.data;
-    //this.students.push("")
     this.studentsAll = this.students;
     this.wrongs1 = new Array();
     this.wrongs2 = new Array();
@@ -84,28 +90,28 @@ export default {
         this.classes.push(this.students[i].className);
       }
     }
-    console.log(this.classes);
-    this.students = this.studentsAll.filter(item => item.className === this.classes[0])
     this.size = this.students.length;
-    console.log(this.students)
   },
   methods: {
     updateClass(event) {
       let className = event.target.value
-      this.students = this.studentsAll.filter(item => item.className === className)
-      console.log(this.students)
-      this.size = this.students.length;
+      this.index = 0;
+      if (className != "all"){
+        this.students = this.studentsAll.filter(item => item.className === className)
+        this.size = this.students.length;
+      }else {
+        this.students = this.studentsAll;
+        this.size = this.students.length;
+      }
     },
     evaluate() {
-      this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
+      this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
     },
     wrongU() {
       if (this.index < this.size - 1) {
         this.wrong++;
-        this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
+        this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
         this.wrongs1.push(this.students[this.index])
-        console.log("index:" + this.index)
-        console.log("size:" + this.size)
       } else if (this.wrongs1.length == 0) {
         this.finish = true;
       }
@@ -115,8 +121,7 @@ export default {
     rightU() {
       if (this.index < this.size - 1) {
         this.right++;
-        this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100) + "%"
-        console.log("index:" + this.index)
+        this.result = "Resultat: " + (this.right / (this.wrong + this.right) * 100).toFixed(2)  + "%"
       } else if (this.wrongs1.length == 0) {
         this.finish = true;
       }
@@ -124,7 +129,6 @@ export default {
     },
 
     loadWrong() {
-      console.log(this.wrongs1)
       this.students = this.wrongs1;
       this.students.push("");
       this.size = this.students.length;
@@ -143,18 +147,42 @@ export default {
 </script>
 
 <style scoped>
-.btn_1 {
+#btn_1 {
   background-color: white;
   border: none;
 }
-.button_1 {
+#button_1 {
   width: 50px;
   height: 50px;
   border: none;
 }
-.button_2 {
-  width: 70px;
-  height: 70px;
+#button_2 {
+  width: 50px;
+  height: 50px;
   border: none;
+}
+
+#btn_1 img {
+  border-radius: 0;
+  padding-inline: 10px;
+}
+
+select {
+  margin-bottom: 1em;
+  padding: .25em;
+  border: 0;
+  border-bottom: 2px solid currentcolor;
+  font-weight: normal;
+  letter-spacing: .15em;
+  border-radius: 0;
+}
+
+#karteiKarten {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 </style>

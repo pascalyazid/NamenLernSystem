@@ -7,7 +7,7 @@
           @click="cardOne == 'start' ? (cardOne = 'flipped' ) : (cardOne = 'start' )"
           v-bind:class="{ flipme: cardOne == 'flipped' }">
         <div class="card__face card__face--front">
-          <img :src="'/students/load?id=' + id" class="imageS">
+          <img :src="'/students/load?id=' + id" class="imageS" style="object-fit: cover">
         </div>
         <div class="card__face card__face--back">
           <p>{{ firstName }} {{ lastName }}</p>
