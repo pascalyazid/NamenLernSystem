@@ -1,11 +1,9 @@
 package com.namenLernsystem.service;
 
-import org.springframework.core.io.ClassPathResource;
 import javax.ws.rs.core.Application;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -50,10 +48,9 @@ public class Config extends Application {
      */
     private static void readProperties() throws IOException {
 
-       InputStream inputStream = new ClassPathResource("application.properties").getInputStream();
-        //InputStream inputStream = null;
+        InputStream inputStream = null;
         try {
-           // inputStream = new FileInputStream(PROPERTIES_PATH);
+            inputStream = new FileInputStream(PROPERTIES_PATH);
             properties.load(inputStream);
         } catch (IOException e) {
             e.printStackTrace();

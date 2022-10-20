@@ -10,8 +10,8 @@
     </parent>
     <groupId>com.namenLernsystem</groupId>
     <artifactId>namenLernsystem</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>namenLernsystem</name>
+    <version>1.0</version>
+    <name>NamenLernsystem</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>19</java.version>
@@ -19,6 +19,7 @@
         <npm.version>8.15.0</npm.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -88,6 +89,14 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <outputDirectory>NamenLernSystem</outputDirectory>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -170,7 +179,6 @@
                     <target>18</target>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 
